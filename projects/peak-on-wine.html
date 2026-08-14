@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running a Unity 6 game on free Wine — Enzo Markarian</title>
+<meta name="description" content="How six bugs across five layers stopped a Windows game from working on a Mac, and what it took to find each one.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌘</text></svg>">
+<style>
+  .stack-box { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+  .stack-box.hit { stroke: var(--accent); stroke-width: 2; }
+  .stack-label { fill: var(--ink); font: 600 14px var(--sans); }
+  .stack-sub { fill: var(--ink-faint); font: 12px var(--sans); }
+  .bugdot { fill: var(--accent); }
+  .bugnum { fill: #fff; font: 700 11px var(--sans); text-anchor: middle; }
+  .flow { stroke: var(--ink-faint); stroke-width: 1.5; fill: none; marker-end: url(#arw); }
+  .bug-list li { margin-bottom: 14px; }
+  .bug-list b { color: var(--accent); }
+  .verdict { font-family: var(--mono); font-size: 13px; }
+  .yes { color: var(--good); } .no { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap wide">
+    <a class="brand" href="/">Enzo Markarian</a>
+    <nav>
+      <a href="/">Resume</a>
+      <a href="/projects/peak-on-wine.html" aria-current="page">Case study</a>
+      <a href="https://github.com/zeno-blade-creator">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap wide">
+
+  <div class="hero">
+    <h1>The cursor moved. Nothing clicked.</h1>
+    <p class="tagline">
+      A Windows game, a Mac, and six separate bugs stacked on top of each other —
+      only one of which was the one everybody was talking about. A case study in
+      directing a debugging effort, and in how often an error message points away
+      from its own cause.
+    </p>
+  </div>
+
+  <section>
+    <h2>The problem</h2>
+    <p>
+      PEAK is a Unity 6 game that only runs on Windows. I wanted to play it on my Mac
+      with friends. The usual answer is <b>Wine</b> — free software that translates
+      Windows programs so they run on other systems — wrapped in an app called
+      <b>Whisky</b> that makes it manageable.
+    </p>
+    <p>
+      The game launched. It rendered. The cursor moved and menus highlighted under it.
+      But <strong>no click ever did anything.</strong> Keyboard fine. Mouse movement
+      fine. Clicks: nothing.
+    </p>
+    <p>
+      Even the paid commercial alternative didn't fully solve it. Getting there meant
+      finding six distinct problems, spread across every layer between the game and the
+      screen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Where each bug lived</h2>
+    <p class="sub">
+      Every box is a translation step. A Windows game speaks Windows; a Mac doesn't.
+      Each layer converts one thing into another, and each one had somewhere to hide a bug.
+    </p>
+
+    <figure>
+      <svg viewBox="0 0 720 560" role="img" aria-labelledby="stacktitle">
+        <title id="stacktitle">The layer stack from game to GPU, with six bug locations marked</title>
+        <defs>
+          <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-faint)"/>
+          </marker>
+        </defs>
+
+        <!-- layer 1 -->
+        <rect class="stack-box" x="120" y="14" width="360" height="58" rx="8"/>
+        <text class="stack-label" x="140" y="40">PEAK — a Unity 6 game</text>
+        <text class="stack-sub" x="140" y="59">asks Windows for mouse and graphics</text>
+        <circle class="bugdot" cx="500" cy="43" r="12"/><text class="bugnum" x="500" y="47">1</text>
+
+        <path class="flow" d="M300 72 L300 100"/>
+
+        <!-- layer 2 -->
+        <rect class="stack-box hit" x="120" y="102" width="360" height="58" rx="8"/>
+        <text class="stack-label" x="140" y="128">Windows input API (win32u)</text>
+        <text class="stack-sub" x="140" y="147">the part Wine has to re-implement</text>
+        <circle class="bugdot" cx="500" cy="131" r="12"/><text class="bugnum" x="500" y="135">3</text>
+
+        <path class="flow" d="M300 160 L300 188"/>
+
+        <!-- layer 3 -->
+        <rect class="stack-box hit" x="120" y="190" width="360" height="58" rx="8"/>
+        <text class="stack-label" x="140" y="216">Wine — the translation layer</text>
+        <text class="stack-sub" x="140" y="235">decides which library actually gets used</text>
+        <circle class="bugdot" cx="500" cy="219" r="12"/><text class="bugnum" x="500" y="223">4</text>
+        <circle class="bugdot" cx="530" cy="219" r="12"/><text class="bugnum" x="530" y="223">5</text>
+
+        <path class="flow" d="M300 248 L300 276"/>
+
+        <!-- layer 4 -->
+        <rect class="stack-box hit" x="120" y="278" width="360" height="58" rx="8"/>
+        <text class="stack-label" x="140" y="304">DirectX → Metal (DXMT)</text>
+        <text class="stack-sub" x="140" y="323">turns Windows graphics into Apple graphics</text>
+        <circle class="bugdot" cx="500" cy="307" r="12"/><text class="bugnum" x="500" y="311">2</text>
+        <circle class="bugdot" cx="530" cy="307" r="12"/><text class="bugnum" x="530" y="311">6</text>
+
+        <path class="flow" d="M300 336 L300 364"/>
+
+        <!-- layer 5 -->
+        <rect class="stack-box" x="120" y="366" width="360" height="52" rx="8"/>
+        <text class="stack-label" x="140" y="390">Metal — Apple's graphics system</text>
+        <text class="stack-sub" x="140" y="408">native, fast, nothing wrong here</text>
+
+        <path class="flow" d="M300 418 L300 446"/>
+
+        <!-- layer 6 -->
+        <rect class="stack-box" x="120" y="448" width="360" height="52" rx="8"/>
+        <text class="stack-label" x="140" y="472">The GPU</text>
+        <text class="stack-sub" x="140" y="490">Apple M2</text>
+
+        <text class="stack-sub" x="120" y="532">Six numbered bugs. Only bug 1 was the one people write about.</text>
+      </svg>
+      <figcaption>Each layer translates for the one below it. A failure anywhere looks identical from the top: the game just doesn't work.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>The six bugs</h2>
+    <ol class="bug-list">
+      <li>
+        <b>The clicks that went nowhere.</b> Unity 6 asks Windows for a newer kind of
+        mouse message, then listens only for that kind. Wine replies "not implemented"
+        and keeps sending the old kind. The clicks genuinely happened — nothing was
+        listening. Movement uses a different path, which is why the cursor still moved
+        and the failure looked so bizarre.
+      </li>
+      <li>
+        <b>Half of one graphics system, half of another.</b> Whisky switches graphics
+        translators by copying files. Its two packages contain <em>different numbers of
+        files</em>, and nothing deletes the old ones — so switching leaves a mismatched
+        set that can't start a game. This is a real bug in Whisky, and it re-breaks
+        itself every time you launch from the app.
+      </li>
+      <li>
+        <b>A screen size that doesn't exist.</b> On a Retina Mac, macOS reports the
+        screen as smaller than it physically is. Unity saved that fake size; Wine checked
+        it against real display modes; nothing matched. The game refused to start —
+        permanently, because the bad value was saved.
+      </li>
+      <li>
+        <b>A setting that was never written down.</b> Whisky tells Wine which graphics
+        library to use only when <em>Whisky itself</em> launches the game. Start it any
+        other way and Wine quietly falls back to a version that cannot work on a Mac.
+      </li>
+      <li>
+        <b>1,325 debuggers.</b> Wine automatically launches a debugger whenever a program
+        crashes. In a crash loop that compounds — 1,325 debugger processes consumed 15 GB
+        of memory and made the machine unusable. Killing them freed 13 GB instantly.
+        Nothing warns you this can happen.
+      </li>
+      <li>
+        <b>A setting that doesn't exist anywhere.</b> A widely-copied guide tells people
+        to set a particular option to enable the graphics translator. That option exists
+        in <em>no version</em> of Wine. Everyone following that advice silently gets
+        nothing — and every "I tried it and it didn't help" conclusion built on it is
+        meaningless.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>The measurement that changed everything</h2>
+    <p>
+      A previous attempt had asked: is this rebuilt library the same as the one that
+      ships? It compared the library's <strong>exported</strong> functions — the list of
+      things it offers to other programs.
+    </p>
+
+    <pre><code>exports: 504 vs 504  →  "identical, theory eliminated"</code></pre>
+
+    <p>
+      That comparison <em>could not possibly</em> have found the difference. Exports are
+      a library's public menu. They're declared in a list, and they don't change based on
+      what you leave out when building. Comparing them proves almost nothing.
+    </p>
+    <p>
+      The right question was the opposite one: what does this library <strong>need from
+      others</strong>? Its imports.
+    </p>
+
+    <pre><code>imports: 164 vs 118  →  46 missing, including the entire font system</code></pre>
+
+    <p>
+      An entire subsystem had been silently left out of the build. The check that said
+      "identical" and the check that revealed the truth were both one command long. The
+      difference was knowing which question to ask.
+    </p>
+
+    <div class="note">
+      <strong>Then it got worse — usefully.</strong> After fixing that, the rebuilt
+      library passed <em>every</em> check: imports matched, exports matched, all the right
+      pieces were linked, every function it needed existed. It still didn't work. The
+      cause was a missing search path — a single line telling the library where to look
+      for its own dependencies. No amount of inspection would have caught it. Only running
+      it and reading what it said.
+    </div>
+  </section>
+
+  <section>
+    <h2>Five errors that pointed the wrong way</h2>
+    <p class="sub">Building the fix produced its own set of problems. Not one of them said what it meant.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>What it said</th><th>What it actually was</th></tr></thead>
+        <tbody>
+          <tr><td class="verdict">C compiler cannot create executables</td><td>A <strong>space</strong> in a folder name split one argument into two. The compiler was fine.</td></tr>
+          <tr><td class="verdict">Your bison version is too old</td><td>The modern version <em>was</em> installed — deliberately hidden from the default path, so a 2006 copy won.</td></tr>
+          <tr><td class="verdict">Build died generating fonts</td><td>macOS security silently strips certain settings when one program launches another.</td></tr>
+          <tr><td class="verdict">(nothing — build succeeded)</td><td>A library name was mis-read into an unusable string. Failed only later, at runtime.</td></tr>
+          <tr><td class="verdict">(nothing — all checks passed)</td><td>The missing search path above.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The pattern is worth keeping: <strong>when an error describes something that should
+      obviously work, stop debugging the thing it names.</strong> Check paths, versions and
+      environment instead.
+    </p>
+  </section>
+
+  <section>
+    <h2>How I actually worked</h2>
+    <p>
+      I didn't write the fix. The mouse implementation is CodeWeavers' work, published
+      as open source because its licence requires it. What I did was direct the effort —
+      and the parts that mattered were mostly about <em>process</em>.
+    </p>
+
+    <h3>I set the rules before the work started</h3>
+    <p>
+      Research before trial and error. Free software only. Prefer whichever fix survives
+      future updates. Explain it to me well enough that I understand it. Those constraints
+      shaped every decision that followed.
+    </p>
+
+    <h3>I challenged an answer I couldn't verify</h3>
+    <p>
+      I was told the commercial software had already fixed right-click. I knew it hadn't,
+      because I'd played the game and it didn't work. I had no way to evaluate the
+      technical argument — it came with disassembled machine code attached. I pushed back
+      anyway, on the strength of what I'd seen.
+    </p>
+    <p>
+      That forced a re-verification, and the earlier analysis turned out to have been
+      incomplete. <strong>Deferring to the confident technical answer would have been the
+      wrong call.</strong>
+    </p>
+
+    <h3>I noticed a missing abstraction</h3>
+    <p>
+      Backup scripts were multiplying — restore this, restore that. I suggested version
+      control instead. The scripts weren't the problem; they were a symptom of not having
+      the right tool.
+    </p>
+
+    <h3>I tried to break it deliberately</h3>
+    <p>
+      Once it worked, I went back in and changed every setting I could find that might
+      break it — windowed, fullscreen, resolution, launching from different places. That's
+      how bug 2 was caught: it only appears when you launch the game a particular way.
+    </p>
+  </section>
+
+  <section>
+    <h2>Result</h2>
+    <ul>
+      <li>The game runs on entirely free software. Two-hour sessions, voice chat, both monitors.</li>
+      <li>Left, right and middle click all work, plus click-and-drag.</li>
+      <li>Six defects documented with evidence — two of them bugs in Whisky itself, currently unreported on the maintained fork.</li>
+      <li>The setup repairs itself: the launcher detects and fixes the graphics problem before it can bite.</li>
+      <li>Around 14 GB of disk reclaimed afterwards, once the commercial alternative was no longer needed.</li>
+    </ul>
+
+    <div class="note">
+      <strong>What I'd claim, and what I wouldn't.</strong> I did not implement a Windows
+      API, build a compiler toolchain, or read assembly. I directed a multi-day debugging
+      effort, set its constraints, caught an error in its analysis, and made sure the
+      result was verified rather than assumed. That's the honest version — and it's the
+      one I can defend in a conversation.
+    </div>
+
+    <p style="margin-top:24px">
+      Full technical write-up, with the evidence for every claim:
+      <a href="https://github.com/zeno-blade-creator/whisky-unity-mouse-fix">the project repository</a>.
+    </p>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="wrap wide">
+    The mouse implementation is CodeWeavers' work, used under the LGPL.
+    <a href="/">Back to resume</a>.
+  </div>
+</footer>
+
+</body>
+</html>

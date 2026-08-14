@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enzo Markarian</title>
+<meta name="description" content="Enzo Markarian — resume and project portfolio.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌘</text></svg>">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">Enzo Markarian</a>
+    <nav>
+      <a href="/" aria-current="page">Resume</a>
+      <a href="/projects/peak-on-wine.html">Case study</a>
+      <a href="https://github.com/zeno-blade-creator">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Enzo Markarian</h1>
+    <p class="tagline">
+      I direct technical work — setting the constraints, checking the results, and
+      refusing to accept an answer I can't verify. Most recently that meant making a
+      Windows game run on a Mac after commercial software couldn't.
+    </p>
+    <p class="links">
+      <a href="mailto:enzomarkarian28@gmail.com">enzomarkarian28@gmail.com</a>
+      <a href="https://github.com/zeno-blade-creator">GitHub</a>
+      <!-- TODO tomorrow: LinkedIn URL, phone if wanted, location -->
+    </p>
+  </div>
+
+  <div class="note">
+    <strong>Draft.</strong> Built 13 August 2026 as a working skeleton — the Wine case
+    study is complete, the rest is placeholder until Enzo fills it in. Everything marked
+    <code>TODO</code> in the source needs his input.
+  </div>
+
+  <section>
+    <h2>Projects</h2>
+    <p class="sub">Things I've built or directed.</p>
+
+    <div class="cards">
+      <a class="card" href="/projects/peak-on-wine.html">
+        <h3>Running a Unity 6 game on free Wine</h3>
+        <p>Diagnosed why mouse clicks silently failed across a five-layer graphics and
+           input stack, and produced the first working fix for the free macOS wrapper.
+           Six defects documented, two of them in the wrapper itself.</p>
+        <span class="tag">systems debugging</span><span class="tag">macOS</span><span class="tag">AI-directed</span>
+      </a>
+
+      <a class="card" href="https://github.com/zeno-blade-creator/Blockaform">
+        <h3>Blockaform</h3>
+        <p>A 3D puzzle game about manipulating blocks in space to route a character to
+           the end of each map. Built in Unity.</p>
+        <span class="tag">Unity</span><span class="tag">game design</span>
+      </a>
+
+      <a class="card" href="#bwsi">
+        <h3>BWSI team provisioning</h3>
+        <p>Redesigned how instructor and student teams are created and permissioned for
+           an MIT summer programme — three-tier teams, a preview-then-confirm bot, and
+           nightly access-health checks.</p>
+        <span class="tag">automation</span><span class="tag">GitHub Actions</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <p class="sub">TODO — Enzo to confirm titles, organisations and dates.</p>
+
+    <div class="role" id="bwsi">
+      <div class="meta">
+        <div><strong>MIT Beaver Works Summer Institute</strong> <span class="where">— Serious Games / AI</span></div>
+        <span class="when">2026</span>
+      </div>
+      <ul>
+        <li>Redesigned team provisioning into a three-tier structure (head, instructor,
+            student teams) with strictly team-based access and time-scoped permissions,
+            so past years become read-only automatically.</li>
+        <li>Introduced a preview-then-confirm workflow — proposed changes are shown for
+            review before anything is applied — reducing the risk of a mistaken bulk
+            permission change.</li>
+        <li>Added a nightly access-health check that publishes findings to the course
+            website, surfacing orphaned repositories and people with no team.</li>
+        <li>Migrated 8 project repositories off MIT's GitHub Enterprise, verifying every
+            reference matched after the move.</li>
+      </ul>
+      <!-- TODO: was this a TA role, intern, volunteer? Confirm title and dates.
+           TODO: how many students/instructors did this serve? Real number if known. -->
+    </div>
+
+    <div class="role">
+      <div class="meta">
+        <div><strong>TODO — other roles</strong> <span class="where">— add tomorrow</span></div>
+        <span class="when">—</span>
+      </div>
+      <ul><li>Placeholder.</li></ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <p class="sub">TODO — Enzo to fill in.</p>
+    <div class="role">
+      <div class="meta">
+        <div><strong>TODO — institution</strong> <span class="where">— programme</span></div>
+        <span class="when">—</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I'm good at</h2>
+    <ul>
+      <li><strong>Directing technical work I can't personally perform</strong> — setting
+          constraints, defining what "done" means, and keeping quality control over the
+          result.</li>
+      <li><strong>Root-cause diagnosis</strong> — insisting on evidence over trial and
+          error, and knowing when the evidence isn't good enough yet.</li>
+      <li><strong>Challenging confident answers</strong> — including expert ones, when
+          they contradict what I can see.</li>
+      <li>TODO — languages, tools, coursework Enzo wants listed.</li>
+    </ul>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    Built with plain HTML and CSS. Source:
+    <a href="https://github.com/zeno-blade-creator/zeno-blade-creator.github.io">this repository</a>.
+  </div>
+</footer>
+
+</body>
+</html>
