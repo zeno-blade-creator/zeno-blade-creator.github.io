@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three integrations that run without me — Enzo Markarian</title>
+<meta name="description" content="Trello, Google Drive and Google Calendar integrations running unattended on a Mac — and the environment-level failure that broke all three the same way.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌘</text></svg>">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap wide">
+    <a class="brand" href="/">Enzo Markarian</a>
+    <nav>
+      <a href="/">Resume</a>
+      <a href="/projects/personal-integrations.html" aria-current="page">Integrations</a>
+      <a href="https://github.com/zeno-blade-creator">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap wide">
+
+  <div class="hero">
+    <h1>Three integrations that run without me</h1>
+    <p class="tagline">
+      A task board, a file store and a calendar, wired to a Mac and left alone.
+      The interesting part was not building them — it was the one failure that
+      broke all three in the same way.
+    </p>
+  </div>
+
+  <section>
+    <h2>The shared failure</h2>
+    <p>
+      For weeks the Trello integration failed every morning and worked every time I
+      tested it by hand. That combination is the whole story: it meant the code was
+      fine and the <em>environment</em> was not.
+    </p>
+    <p>
+      The config named <code>python3</code>. A program launched from a terminal
+      inherits the shell's <code>PATH</code> and finds the right Python. The same
+      program launched at login inherits a minimal one —
+      <code>/usr/bin:/bin:/usr/sbin:/sbin</code> — where <code>python3</code> means
+      an old system build with none of the required packages installed. Homebrew's
+      tools are not on that path at all.
+    </p>
+    <p>
+      So it only ever broke when I was not watching, and testing it the obvious way
+      proved nothing, because my terminal was the one case that already worked.
+    </p>
+
+    <div class="note">
+      <strong>What came out of it.</strong> Three rules now applied to every
+      integration: absolute interpreter paths in configs, never bare commands; a
+      dedicated environment per project rather than anything installed globally; and
+      every dependency pinned. Plus a test that actually reproduces the failure —
+      launching with a deliberately stripped <code>PATH</code>, rather than from a
+      shell that hides the problem.
+    </div>
+  </section>
+
+  <section>
+    <h2>The three</h2>
+
+    <h3>Trello — a daily task board</h3>
+    <p>
+      Reads and writes a live board: creating cards, moving them between lists,
+      setting real due dates, and reordering the day chronologically. Lists are
+      fetched at runtime rather than hardcoded, so new ones appear without a code
+      change — a decision that has paid for itself every time the board's shape has
+      changed.
+    </p>
+    <p>
+      It has run daily for months. A dependency upgrade broke it once, in a way that
+      looked exactly like a connection failure; that is why versions are now pinned
+      and why there is a diagnostic script that checks every known failure mode and
+      repairs what it can.
+    </p>
+
+    <h3>Google Drive — bulk operations the built-in connector doesn't do</h3>
+    <p>
+      There is already a Drive connector available; this extends it rather than
+      replacing it. The gap is bulk work. Renaming a hundred files after a naming
+      convention changes mid-project is the case that motivated it — tedious by
+      hand, trivial to script, and now permanently solved for every future project
+      rather than once.
+    </p>
+
+    <h3>Google Calendar — mirroring a calendar I don't own</h3>
+    <p>
+      Apple Calendar is a <em>client</em> displaying iCloud, Google and local
+      calendars together. Google Calendar is a <em>server</em> that only knows its
+      own events. So an event on iCloud is invisible to Google, and there is no
+      bridge — which is why events kept seeming to "not sync" in one direction.
+      Direction was never the issue; storage location was.
+    </p>
+    <p>
+      The usual workaround is to publish the iCloud calendar and have Google
+      subscribe to the URL. That is unavailable for a calendar shared <em>to</em>
+      you: only its owner can publish it. So this reads the calendar locally through
+      macOS's own EventKit API, where access already exists, and writes copies into
+      a dedicated Google calendar on a six-hour schedule.
+    </p>
+
+    <div class="note">
+      <strong>Two things macOS made harder than expected.</strong>
+      The reader has to be a real application bundle, not a script — macOS grants
+      privacy permissions to identifiable apps, and a script spawned from a shell is
+      judged as the shell, then refused <em>without ever showing a prompt</em>. And
+      deduplication had to be by identity rather than resemblance: each copied event
+      carries its source occurrence ID, so a renamed or moved event updates in place
+      instead of becoming a second copy.
+    </div>
+  </section>
+
+  <section>
+    <h2>How I worked on these</h2>
+
+    <h3>I required the tool be checked against reality before it wrote anything</h3>
+    <p>
+      Before the calendar mirror was allowed to create a single event, I had it
+      compare against what was already on the target calendar. That turned out to
+      matter: the same reminders existed twice already — once created directly, once
+      arriving as invitations from a family member an hour apart. A naive mirror
+      would have stacked a third copy on top. Catching that before it ran, rather
+      than cleaning it up afterwards, was the point.
+    </p>
+
+    <h3>I chose the cheaper design over the more impressive one</h3>
+    <p>
+      The mirror could have run continuously and stayed current within minutes. It
+      does not. The calendar it mirrors holds dinners, appointments and birthdays —
+      things that do not change by the minute — so a six-hour schedule costs nothing
+      to run and loses nothing that matters. Latency was the right thing to spend.
+    </p>
+
+    <h3>I trusted the symptom over the explanation</h3>
+    <p>
+      "It works when I test it" was treated as evidence about the test, not
+      reassurance about the code. That reframing is what turned a recurring mystery
+      into a fifteen-minute fix.
+    </p>
+  </section>
+
+  <section>
+    <h2>Result</h2>
+    <p>
+      Three integrations running unattended on scheduled jobs, surviving reboots,
+      needing no maintenance. One class of failure understood well enough that it
+      cannot recur silently across any of them.
+    </p>
+    <p style="margin-top:24px">
+      Code for the calendar mirror, including the write-up of both bugs found while
+      testing it:
+      <a href="https://github.com/zeno-blade-creator/icloud-google-calendar-mirror">the project repository</a>.
+    </p>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="wrap wide">
+    Built and directed by Enzo Markarian.
+    <a href="/">Back to resume</a>.
+  </div>
+</footer>
+
+</body>
+</html>
