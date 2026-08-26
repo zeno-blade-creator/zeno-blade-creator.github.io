@@ -15,7 +15,8 @@
     <a class="brand" href="/">Enzo Markarian</a>
     <nav>
       <a href="/" aria-current="page">Resume</a>
-      <a href="/projects/peak-on-wine.html">Case study</a>
+      <a href="/projects/peak-on-wine.html">Case studies</a>
+      <a href="/projects/ai-workflow.html">The workflow</a>
       <a href="https://github.com/zeno-blade-creator">GitHub</a>
     </nav>
   </div>
@@ -48,6 +49,15 @@
     <p class="sub">Things I've built or directed.</p>
 
     <div class="cards">
+      <a class="card" href="/projects/ddinfo-macos-port.html">
+        <h3>Porting a Windows-only game tool to macOS</h3>
+        <p>Directed a seven-ticket port of an open-source practice tool so it runs on a
+           Mac, including reading a live game's memory. Disbelieved a review that
+           rejected working code on a false claim, and found that half the recorded
+           failures were the measuring apparatus rather than the work.</p>
+        <span class="tag">C#</span><span class="tag">macOS</span><span class="tag">AI-directed</span>
+      </a>
+
       <a class="card" href="/projects/peak-on-wine.html">
         <h3>Running a Unity 6 game on free Wine</h3>
         <p>Diagnosed why mouse clicks silently failed across a five-layer graphics and
@@ -81,6 +91,39 @@
     </div>
   </section>
 
+  <section id="workflow">
+    <h2>How I work</h2>
+    <p class="sub">Not a project — the system the projects above were built with.</p>
+
+    <p>
+      Every project on this page ran through the same pipeline: interrogate the plan
+      until it holds, write down the absolutes and the commands that prove them,
+      decompose into ordered slices with the riskiest first, then one human confirmation
+      before anything runs unattended. A ticket only counts as done when the build
+      passes <em>and</em> an independent reviewer, which never saw the work being done,
+      agrees the change did what was asked.
+    </p>
+    <p>
+      The part I'd actually want to talk about is the arrow that points backwards. A
+      finished project is a labelled record of everything that went wrong, and it is
+      normally thrown away. Feeding it back into the tooling is obvious to want and easy
+      to do badly — every observation looks like a lesson, and a set of instructions that
+      only ever grows gets worse while appearing to improve.
+    </p>
+    <p>
+      So the rules are: no change without a receipt, and two sightings before something
+      counts as a pattern. No instruction without a test that fails when you remove it.
+      And an audit that is allowed to <strong>delete</strong> — because adding feels
+      productive and removing feels risky, which is exactly why these systems rot.
+    </p>
+    <p>
+      On its first real pass, that audit deleted four of the six instructions the same
+      pass had just written. One tool finished the exercise a single line longer than it
+      started.
+    </p>
+    <p><a href="/projects/ai-workflow.html">The full write-up, including two ways the system failed and what changed →</a></p>
+  </section>
+
   <section id="experience">
     <h2>Experience</h2>
     <p class="sub">TODO — Enzo to confirm titles, organisations and dates.</p>
@@ -112,6 +155,20 @@
         <span class="when">2026</span>
       </div>
       <ul>
+        <li>Directed the macOS port of an open-source game modding toolset across seven
+            dependency-ordered tickets, sequencing the highest-risk work first so an
+            infeasible approach would surface on day one rather than day six; the port
+            is merged and running.</li>
+        <li>Identified that a code review had rejected correct work on a false technical
+            claim, by requiring the claim be checked against the system's own libraries
+            rather than accepted.</li>
+        <li>Determined that half of that effort's recorded failures were defects in the
+            verification harness rather than in the work, by reading the reason attached
+            to each one instead of the count.</li>
+        <li>Set the constraints for an AI-directed development pipeline — no change
+            without evidence it changes an outcome, a tamper-evident record of every
+            change, and no unattended modification of the tooling itself. Its first
+            audit removed four of the six instructions that same pass had added.</li>
         <li>Built and maintain three personal automation integrations (Trello, Google
             Drive, Google Calendar) connecting local macOS data to cloud APIs;
             diagnosed and documented recurring environment-level failures affecting
@@ -151,7 +208,11 @@
       <li><strong>Root-cause diagnosis</strong> — insisting on evidence over trial and
           error, and knowing when the evidence isn't good enough yet.</li>
       <li><strong>Challenging confident answers</strong> — including expert ones, when
-          they contradict what I can see.</li>
+          they contradict what I can see. Twice now this has been the decisive move on a
+          project.</li>
+      <li><strong>Designing systems that can be wrong safely</strong> — tamper-evident
+          records, tests that refuse to answer rather than answer badly, and automation
+          that stops short of the judgement call.</li>
       <li>TODO — languages, tools, coursework Enzo wants listed.</li>
     </ul>
   </section>

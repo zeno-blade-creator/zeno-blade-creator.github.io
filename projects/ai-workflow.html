@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A workflow that gets better after each project — Enzo Markarian</title>
+<meta name="description" content="Idea to shipped code through one pipeline, and the part most setups skip: feeding a finished project's failures back into the tooling, with the discipline that stops it rotting.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌘</text></svg>">
+<style>
+  .stage { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+  .stage.gate { stroke: var(--accent); stroke-width: 2.5; }
+  .stage.back { stroke: var(--good); stroke-width: 2; }
+  .st-label { fill: var(--ink); font: 600 12.5px var(--sans); text-anchor: middle; }
+  .st-sub { fill: var(--ink-faint); font: 11px var(--sans); text-anchor: middle; }
+  .flow2 { stroke: var(--ink-faint); stroke-width: 1.5; fill: none; marker-end: url(#a3); }
+  .flow2.loop { stroke: var(--good); stroke-dasharray: 5 4; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-bg);
+             padding: 14px 18px; margin: 22px 0; border-radius: 0 6px 6px 0; }
+  .callout p:first-child { margin-top: 0; }
+  .callout p:last-child { margin-bottom: 0; }
+  .num { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+  .big { font: 700 2.1rem var(--serif); color: var(--accent); line-height: 1.1; }
+  .statrow { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+             margin: 24px 0; }
+  .stat { border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px;
+          background: var(--surface); }
+  .stat p { margin: 6px 0 0; font-size: 14.5px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap wide">
+    <a class="brand" href="/">Enzo Markarian</a>
+    <nav>
+      <a href="/">Resume</a>
+      <a href="/projects/ai-workflow.html" aria-current="page">The workflow</a>
+      <a href="https://github.com/zeno-blade-creator">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap wide">
+
+  <div class="hero">
+    <h1>Most self-improving setups are ratchets.</h1>
+    <p class="tagline">
+      They notice a mistake, append a rule, and never look back. Six months later the
+      instructions are a pile of corrections written against a model that no longer
+      exists — and every one is still being paid for on every request. The library gets
+      bigger and the agent gets worse. This is the system I built to run in both
+      directions.
+    </p>
+  </div>
+
+  <section>
+    <h2>The pipeline</h2>
+    <p class="sub">
+      One command from "I want to build X" to reviewed, committed code. The stages are
+      separate because each is independently useful; running them by hand means
+      remembering four invocations and the one gate that actually matters.
+    </p>
+
+    <svg viewBox="0 0 900 340" width="100%" role="img"
+         aria-label="Diagram: interrogate, spec, decompose, then a single human confirmation gate, then an unattended loop, then a retrospective that feeds back into the skills used by the earlier stages.">
+      <defs>
+        <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+                markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-faint)"/>
+        </marker>
+      </defs>
+
+      <rect class="stage" x="8" y="30" width="150" height="66" rx="8"/>
+      <text class="st-label" x="83" y="58">Interrogate</text>
+      <text class="st-sub" x="83" y="76">one question at a time,</text>
+      <text class="st-sub" x="83" y="90">until the plan holds</text>
+      <path class="flow2" d="M 160 63 L 190 63"/>
+
+      <rect class="stage" x="194" y="30" width="150" height="66" rx="8"/>
+      <text class="st-label" x="269" y="58">Spec</text>
+      <text class="st-sub" x="269" y="76">the absolutes, and the</text>
+      <text class="st-sub" x="269" y="90">commands that prove them</text>
+      <path class="flow2" d="M 346 63 L 376 63"/>
+
+      <rect class="stage" x="380" y="30" width="150" height="66" rx="8"/>
+      <text class="st-label" x="455" y="58">Decompose</text>
+      <text class="st-sub" x="455" y="76">ordered slices, riskiest</text>
+      <text class="st-sub" x="455" y="90">one first</text>
+      <path class="flow2" d="M 532 63 L 562 63"/>
+
+      <rect class="stage gate" x="566" y="24" width="160" height="78" rx="8"/>
+      <text class="st-label" x="646" y="52">The one gate</text>
+      <text class="st-sub" x="646" y="70">a human confirms, because</text>
+      <text class="st-sub" x="646" y="84">everything past here spends</text>
+      <text class="st-sub" x="646" y="97">money unattended</text>
+
+      <path class="flow2" d="M 646 106 L 646 140"/>
+
+      <rect class="stage" x="300" y="146" width="600" height="72" rx="8"/>
+      <text class="st-label" x="600" y="174">The loop, unattended</text>
+      <text class="st-sub" x="600" y="192">one ticket per fresh session · the build must pass · an independent reviewer must agree</text>
+      <text class="st-sub" x="600" y="208">every rejection is written down, with its reason, and replayed into the next attempt</text>
+
+      <path class="flow2" d="M 300 182 L 250 182 L 250 244"/>
+
+      <rect class="stage back" x="90" y="250" width="380" height="76" rx="8"/>
+      <text class="st-label" x="280" y="278">The retrospective</text>
+      <text class="st-sub" x="280" y="296">reads that record and turns it into changes —</text>
+      <text class="st-sub" x="280" y="312">including deleting rules that no longer earn their place</text>
+
+      <path class="flow2 loop" d="M 90 288 L 45 288 L 45 100"/>
+      <text class="st-sub" x="60" y="200" style="text-anchor:start">feeds back into</text>
+      <text class="st-sub" x="60" y="215" style="text-anchor:start">the earlier stages</text>
+    </svg>
+
+    <p>
+      The dashed line is the whole point. Every other arrow is ordinary automation. The
+      one going backwards — a finished project changing the tooling that runs the next
+      one — is the part almost nobody builds, because it only pays off across projects
+      and it is very easy to build badly.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why the backwards arrow is dangerous</h2>
+    <p>
+      A finished project is a labelled record of everything that went wrong: every
+      rejection, with a reason written at the moment of failure by a process with no
+      incentive to be kind. That record is the best training signal in the whole setup,
+      and normally it is thrown away when the project directory is deleted.
+    </p>
+    <p>
+      Feeding it back is obviously attractive and quietly corrosive. Every observation
+      looks like a lesson. Add a rule for each one and the instructions grow without
+      bound — and instructions are not free. They are read on every single request, they
+      compete for attention with the instructions that matter, and most of them exist to
+      patch a weakness in a model that has since been replaced.
+    </p>
+    <p>
+      So the interesting design problem is not "how do I learn from failure". It is
+      <strong>how do I stop learning the wrong things, and how do I remove what I learned
+      when it stops being true.</strong> Three rules, and they are the entire system:
+    </p>
+
+    <h3><span class="num">01</span> &nbsp;No change without a receipt</h3>
+    <p>
+      A receipt is a specific thing that actually happened — a failed check, a
+      correction I typed, a rejected review, a change that got reverted. Not "it felt
+      clumsy." And one receipt is not enough: one sighting is an incident, and only a
+      second sighting makes it a pattern.
+    </p>
+    <p>
+      That rule used to depend on someone remembering the first sighting. It doesn't
+      now: observations are filed as items and matched against existing ones, so the
+      count is a fact the system can show rather than a judgement someone makes. The
+      inbox is also expected to <em>empty</em> — every item ends promoted, dropped with a
+      reason, or waiting with a count. An item that waits long enough without a second
+      sighting gets retired as the one-off it is.
+    </p>
+
+    <h3><span class="num">02</span> &nbsp;No instruction without a guard</h3>
+    <p>
+      A guard is a test case that fails without the change and passes with it. If I
+      can't write one, I don't understand the problem well enough to fix it yet — and
+      saying so is a better outcome than adding a plausible rule.
+    </p>
+    <p>
+      The check is: run the case <em>with</em> the instruction and <em>without</em> it.
+      If the answer doesn't change, the instruction isn't doing anything, and keeping it
+      costs something on every future request. That test now runs as a harness rather
+      than by hand — cases in both conditions in parallel, graded by a reviewer that
+      never learns which arm it is grading.
+    </p>
+
+    <h3><span class="num">03</span> &nbsp;The audit is allowed to delete</h3>
+    <p>
+      Adding to a set of instructions feels productive. Removing feels risky and shows
+      up as a smaller diff. That asymmetry is exactly why these systems rot, and the only
+      cure is making removal as evidence-driven as addition.
+    </p>
+  </section>
+
+  <section>
+    <h2>Does it work?</h2>
+    <p class="sub">
+      Two numbers, both from real runs rather than from the design document.
+    </p>
+
+    <div class="statrow">
+      <div class="stat">
+        <span class="big">4 of 6</span>
+        <p>
+          Instructions deleted by the audit — out of the six that the <em>same pass</em>
+          had just written. They failed the "does the answer change without it" test.
+          One tool ended the exercise a single line longer than it started.
+        </p>
+      </div>
+      <div class="stat">
+        <span class="big">100% → 60%</span>
+        <p>
+          A rule that <em>did</em> earn its place: removing it dropped a graded outcome
+          from every trial to three in five, across five trials per condition. Kept on
+          evidence rather than on conviction.
+        </p>
+      </div>
+    </div>
+
+    <p>
+      The first number is the one I'd lead with. A system that only ever grows is easy
+      to build and tells you nothing about whether it works. A pass that writes six rules
+      and then deletes four of its own is doing the thing that's actually hard.
+    </p>
+  </section>
+
+  <section>
+    <h2>Two failures the system had, and what changed</h2>
+
+    <h3>The record was quietly rewritten</h3>
+    <p>
+      Every change is logged with its evidence, and that log is meant to be append-only
+      — because a system that can revise the history of its own changes can erase the
+      evidence that it got worse.
+    </p>
+    <p>
+      Checking that assumption against a backup showed one entry had been edited in place
+      forty-two seconds after it was written, flipping the record of what happened from
+      "added" to "deleted". The correction was substantively right. The problem was that
+      nothing had stopped it, and nothing would have shown it.
+    </p>
+    <div class="callout">
+      <p>
+        <strong>What changed:</strong> entries now commit to the one before them, so an
+        edit to any past entry breaks a chain that gets checked. That does not
+        <em>prevent</em> a rewrite — it makes one impossible to hide, which is the
+        property a record of getting worse actually needs.
+      </p>
+      <p>
+        The root cause was smaller and more embarrassing: the tool defaulted to logging
+        every change as an addition, so a deletion got recorded as its opposite. That
+        default is gone.
+      </p>
+    </div>
+
+    <h3>The test that decides what survives was measuring nothing</h3>
+    <p>
+      The with-and-without test has an uncomfortable property: the result that licenses a
+      deletion is "no difference" — and "no difference" is also exactly what a broken test
+      produces. A harness that has quietly stopped separating its two conditions reports
+      no difference on everything, and recommends deleting the entire library.
+    </p>
+    <p>
+      It had stopped separating them. A condition that was supposed to run without the
+      instructions could still read them, so both sides were reading the same file and the
+      clean-looking table meant nothing.
+    </p>
+    <div class="callout">
+      <p>
+        <strong>What changed:</strong> the harness now carries a case designed to be
+        unanswerable without the instructions, and checks whether the condition that is
+        supposed to lack them answers it anyway. It also checks whether an answer quotes
+        the exact lines it was supposed to be missing. If either fires, it prints no
+        result at all rather than a result that can't be trusted.
+      </p>
+      <p>
+        It also refuses to give a verdict on too few trials — because at two trials, "no
+        difference" and a coin flip are the same table, and that is the direction that
+        deletes things.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What this is, on a resume</h2>
+    <p>
+      I did not write the harness code, and I've been careful not to imply otherwise
+      anywhere on this site. What I did was define the problem and the constraints:
+      that the system must be able to shrink, that no rule enters without evidence that
+      it changes an outcome, that the record of its own changes must be tamper-evident,
+      and that collection can be automated but judgement cannot — nothing modifies the
+      tooling unattended.
+    </p>
+    <p>
+      The general skill is the one running through
+      <a href="/projects/peak-on-wine.html">the Wine project</a> and
+      <a href="/projects/ddinfo-macos-port.html">the macOS port</a> too: directing
+      technical work I could not personally perform, while keeping enough judgement over
+      it to notice when the answer is wrong. Here that meant noticing that a system built
+      to improve itself will, left alone, get worse in a way that looks like progress.
+    </p>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="wrap wide">
+    Built with plain HTML and CSS. Source:
+    <a href="https://github.com/zeno-blade-creator/zeno-blade-creator.github.io">this repository</a>.
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Porting a Windows-only modding tool to macOS — Enzo Markarian</title>
+<meta name="description" content="I wanted an achievement 0.4% of players have. The tool that would help only ran on Windows and Linux. A case study in directing an agent through a port I could not have written myself.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌘</text></svg>">
+<style>
+  .lane { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+  .lane.mine { stroke: var(--accent); stroke-width: 2; }
+  .lane-label { fill: var(--ink); font: 600 13px var(--sans); }
+  .lane-sub { fill: var(--ink-faint); font: 11.5px var(--sans); }
+  .arrow { stroke: var(--ink-faint); stroke-width: 1.5; fill: none; marker-end: url(#a2); }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-bg);
+             padding: 14px 18px; margin: 22px 0; border-radius: 0 6px 6px 0; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout p:first-child { margin-top: 0; }
+  .num { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+  .who td:first-child { white-space: nowrap; }
+  blockquote { margin: 18px 0; padding-left: 18px; border-left: 3px solid var(--border);
+               color: var(--ink-soft); font-style: italic; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap wide">
+    <a class="brand" href="/">Enzo Markarian</a>
+    <nav>
+      <a href="/">Resume</a>
+      <a href="/projects/ddinfo-macos-port.html" aria-current="page">Case study</a>
+      <a href="https://github.com/zeno-blade-creator">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap wide">
+
+  <div class="hero">
+    <h1>I wanted an achievement 0.4% of players have.</h1>
+    <p class="tagline">
+      The practice tool that would have helped only ran on Windows and Linux. So the
+      next project picked itself: port it to macOS. I did not write the code — an AI
+      agent did, over seven tickets and an unattended overnight run. What I did was
+      decide the order, define what counted as done, and refuse the answers that
+      didn't hold up.
+    </p>
+  </div>
+
+  <section>
+    <h2>The setup</h2>
+    <p>
+      Devil Daggers is a first-person arena game with a very short list of people who
+      are good at it. I wanted one of the harder achievements, and getting there means
+      practising specific segments over and over rather than replaying the whole run.
+    </p>
+    <p>
+      There is a tool for exactly that — <b>ddinfo-tools</b>, an open-source app
+      bundling a practice mode, spawn editor, replay editor and custom leaderboards. It
+      reads the running game's memory to show live stats: your splits, your gem count,
+      your homing daggers, as you play.
+    </p>
+    <p>
+      It runs on Windows. It runs on Linux. It does not run on macOS, and I use a Mac.
+    </p>
+    <p>
+      That is the whole origin. Not a work assignment, not a course project — a game I
+      wanted to get good at, and a tool that wouldn't run.
+    </p>
+  </section>
+
+  <section>
+    <h2>What I was actually doing</h2>
+    <p class="sub">
+      This is the part worth being precise about, because it is the part that transfers.
+    </p>
+    <p>
+      I cannot write C# against the Mach kernel API. I did not learn to during this
+      project. An agent wrote every line of the port, and it is genuinely good code —
+      better than I would have produced if I had spent a month learning to write it.
+    </p>
+    <p>
+      What the project needed from me was different, and it turned out to be the part
+      that decides whether an effort like this lands or wastes a weekend:
+    </p>
+
+    <div class="table-scroll">
+      <table class="who">
+        <thead>
+          <tr><th>Decision</th><th>What I chose, and why</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Order</strong></td>
+            <td>Risk first. The memory-reading work went in ticket one, not last —
+                it was the piece most likely to be impossible, and finding that out on
+                day one is cheap while finding it out on day six is not.</td>
+          </tr>
+          <tr>
+            <td><strong>Evidence</strong></td>
+            <td>Capture the real error rather than guess at it. When the app died with
+                no useful log, the next step was making the failure produce a message —
+                not proposing fixes for a cause nobody had seen.</td>
+          </tr>
+          <tr>
+            <td><strong>Safety</strong></td>
+            <td>The agent could push branches and open pull requests, but never merge to
+                <code>main</code>. Anything that reached the main branch got read by a
+                human first.</td>
+          </tr>
+          <tr>
+            <td><strong>Done</strong></td>
+            <td>Each ticket carried conditions checkable by running something or reading
+                the resulting change — not "works well". A separate reviewer with no
+                stake in the work checked each one before it counted.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where the work happened</h2>
+    <p class="sub">
+      Seven tickets, each in its own fresh session, each finished only when the checks
+      passed and an independent review agreed the change did what the ticket asked.
+    </p>
+
+    <svg viewBox="0 0 900 300" width="100%" role="img"
+         aria-label="Diagram: the decisions I made sit above the loop that produced the code, which feeds a verification gate that either accepts a ticket or sends it back with the reason.">
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+                markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-faint)"/>
+        </marker>
+      </defs>
+
+      <rect class="lane mine" x="10" y="12" width="880" height="62" rx="8"/>
+      <text class="lane-label" x="30" y="38">What I decided</text>
+      <text class="lane-sub" x="30" y="58">risk-first order · what counts as done · capture the real error · main stays behind a human</text>
+
+      <path class="arrow" d="M 450 78 L 450 104"/>
+
+      <rect class="lane" x="10" y="110" width="420" height="72" rx="8"/>
+      <text class="lane-label" x="30" y="136">The agent writes the change</text>
+      <text class="lane-sub" x="30" y="156">one ticket, one fresh session, no memory of</text>
+      <text class="lane-sub" x="30" y="172">the previous one</text>
+
+      <path class="arrow" d="M 434 146 L 466 146"/>
+
+      <rect class="lane" x="470" y="110" width="420" height="72" rx="8"/>
+      <text class="lane-label" x="490" y="136">The gate checks it</text>
+      <text class="lane-sub" x="490" y="156">the build runs · the change is committed ·</text>
+      <text class="lane-sub" x="490" y="172">a reviewer who never saw the work agrees</text>
+
+      <path class="arrow" d="M 680 186 L 680 218"/>
+      <rect class="lane mine" x="470" y="224" width="420" height="62" rx="8"/>
+      <text class="lane-label" x="490" y="250">Rejected? The reason is written down</text>
+      <text class="lane-sub" x="490" y="270">and replayed into the next attempt</text>
+
+      <path class="arrow" d="M 470 255 L 230 255 L 230 188"/>
+      <text class="lane-sub" x="252" y="248">retry, knowing what already failed</text>
+    </svg>
+
+    <p>
+      Four attempts across the seven tickets were rejected. That number is the useful
+      one — not because failures are good, but because a rejected attempt writes down
+      <em>why</em>, and that record turned out to be worth more than the code.
+    </p>
+  </section>
+
+  <section>
+    <h2>Three things that went wrong, and what each one taught</h2>
+
+    <h3><span class="num">01</span> &nbsp;The reviewer was confidently wrong</h3>
+    <p>
+      One ticket was rejected on a firm technical claim: the code called a system
+      function that, according to the review, <em>does not exist</em> on macOS. That is
+      the kind of verdict that ends an approach.
+    </p>
+    <p>
+      It was wrong. The symbol does exist — it is an undocumented compatibility export,
+      confirmed by listing the symbols in the system library directly. The work had been
+      correct and was rejected on a false premise.
+    </p>
+    <div class="callout">
+      <p>
+        <strong>What I took from it:</strong> a confident answer from a reviewer is
+        still just an answer. This is the same lesson as my
+        <a href="/projects/peak-on-wine.html">Wine project</a>, where an agent told me a
+        feature worked and I knew from playing that it didn't. Twice now, the moment
+        that mattered was refusing to accept a claim that contradicted what could be
+        checked directly.
+      </p>
+      <p>
+        The route was changed anyway — to the documented one, because relying on an
+        undocumented export is a bet on Apple not removing it. Being right about the
+        fact and still taking the safer path are not in tension.
+      </p>
+    </div>
+
+    <h3><span class="num">02</span> &nbsp;Two failures weren't failures</h3>
+    <p>
+      Two of the four rejections had the same shape: the work was already finished and
+      committed by an earlier attempt, so the retry correctly found nothing left to do,
+      changed nothing — and was failed for changing nothing.
+    </p>
+    <p>
+      Both times the code was already right. The harness was measuring the wrong thing.
+    </p>
+    <div class="callout">
+      <p>
+        <strong>What I took from it:</strong> half the recorded failures in this project
+        were the measuring apparatus, not the work. If I had read the number without
+        reading the reasons, I would have concluded the tickets were badly written and
+        rewritten perfectly good ones.
+      </p>
+    </div>
+
+    <h3><span class="num">03</span> &nbsp;I documented a restriction that wasn't there</h3>
+    <p>
+      Reading another program's memory on macOS requires administrator rights — a real
+      constraint with no way around it for a locally built app. I had it written down
+      that "practice mode needs admin rights."
+    </p>
+    <p>
+      Then I ran it without them. Half of practice mode worked fine. Applying a practice
+      spawn is just writing a file, exactly like the mod manager; only the live-stats
+      half reads the running game. One phrase had collapsed two different things.
+    </p>
+    <div class="callout">
+      <p>
+        <strong>What I took from it:</strong> I found this by using the thing, not by
+        reasoning about it. The correction matters because the user-facing message is
+        the difference between "this feature is unavailable" and "restart with admin
+        rights and it works" — and telling someone the wrong one wastes their time.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where it ended up</h2>
+    <p>
+      It works. On a Mac, against a running game, the tool finds the game's live stats
+      block by scanning its memory — <span class="num">624 MB across 1,189 regions</span>
+      — and renders live run analysis correctly.
+    </p>
+    <p>
+      Windows and Linux find that data by reading a pointer at an address a server hands
+      them. There is no such address published for macOS, so the Mac build has to search
+      for it instead, and then prove that what it found is really the thing and not a
+      copy of the same bytes sitting elsewhere in memory. That difference is most of why
+      the port was more than a recompile.
+    </p>
+    <p>
+      The port is merged and running. Two changes are prepared to go back to the original
+      project: the port itself, and — separately — a three-line fix for a crash that
+      turned out not to be ours at all.
+    </p>
+
+    <div class="callout">
+      <p>
+        <strong>The crash worth mentioning.</strong> During testing the app died at the
+        end of a run. The obvious assumption was that the new Mac code had broken
+        something. It hadn't: the cause was in shared interface code, introduced by the
+        original project's own library upgrade months earlier, and it crashes identically
+        on Windows and Linux. Anyone hovering a graph in that tool has been hitting it.
+      </p>
+      <p>
+        It is going back as its own small pull request rather than buried inside a
+        thousand-line port, so it can be reviewed in two minutes and help people who will
+        never run the Mac build.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I'd say in an interview</h2>
+    <blockquote>
+      I wanted to get good at a game, and the practice tool didn't run on my computer.
+      So I directed the port. I didn't write it — I can't write kernel-level memory code
+      and I didn't pretend to. What I did was decide that the riskiest piece went first
+      so we'd fail cheaply if it was impossible, insist that a crash with no log meant
+      capturing the real error rather than guessing, and keep anything reaching the main
+      branch behind a human read.
+      <br><br>
+      The most useful thing I did was disbelieve a review. It rejected working code on
+      the grounds that a system function didn't exist. It does. That is the second time
+      on two projects that the thing worth doing was refusing a confident answer that
+      contradicted what I could check.
+    </blockquote>
+    <p>
+      Every sentence there is one I can be asked follow-up questions about, which is the
+      only test of a claim on a resume that matters.
+    </p>
+  </section>
+
+  <section>
+    <h2>The part that outlived the project</h2>
+    <p>
+      The record of what went wrong here — every rejection, with its reason, written at
+      the moment it happened — became the input to a separate piece of work: a system
+      that feeds a finished project's failures back into the tooling that runs the next
+      one.
+    </p>
+    <p>
+      <a href="/projects/ai-workflow.html">That is written up separately →</a>
+    </p>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="wrap wide">
+    Built with plain HTML and CSS. Source:
+    <a href="https://github.com/zeno-blade-creator/zeno-blade-creator.github.io">this repository</a>.
+  </div>
+</footer>
+
+</body>
+</html>
