@@ -158,6 +158,18 @@ footer.site a { color: var(--ink-soft); }
 
 a { color: var(--accent); }
 
+/* Unfinished items, deliberately visible.
+   Marked rather than hidden: these need facts only Enzo has, and a TODO he can't see is a
+   TODO that never gets done. Styled so nobody could mistake one for finished content. */
+.todo {
+  color: var(--warn);
+  font-size: 14px;
+  font-style: italic;
+}
+li.todo, p.todo { display: block; margin: 6px 0; }
+span.todo { display: inline-block; margin-top: 4px; }
+.todo::before { content: "⚑ "; font-style: normal; }
+
 @media print {
   header.site, footer.site, nav, .links { display: none; }
   body { font-size: 11pt; background: #fff; color: #000; }
