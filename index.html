@@ -38,12 +38,6 @@
     </p>
   </div>
 
-  <div class="note">
-    <strong>Draft.</strong> Built 13 August 2026 as a working skeleton — the Wine case
-    study is complete, the rest is placeholder until Enzo fills it in. Everything marked
-    <code>TODO</code> in the source needs his input.
-  </div>
-
   <section>
     <h2>Projects</h2>
     <p class="sub">Things I've built or directed.</p>
@@ -54,8 +48,9 @@
         <p>Directed a seven-ticket port of an open-source practice tool so it runs on a
            Mac, including reading a live game's memory. Disbelieved a review that
            rejected working code on a false claim, and found that half the recorded
-           failures were the measuring apparatus rather than the work.</p>
-        <span class="tag">C#</span><span class="tag">macOS</span><span class="tag">AI-directed</span>
+           failures were the measuring apparatus rather than the work. Submitted upstream
+           as two pull requests.</p>
+        <span class="tag">C#</span><span class="tag">macOS</span><span class="tag">open source</span>
       </a>
 
       <a class="card" href="/projects/peak-on-wine.html">
@@ -126,7 +121,8 @@
 
   <section id="experience">
     <h2>Experience</h2>
-    <p class="sub">TODO — Enzo to confirm titles, organisations and dates.</p>
+    <!-- OPEN: confirm the BWSI title, organisation wording and dates. Everything
+         below is accurate as written; only the label is unconfirmed. -->
 
     <div class="role" id="bwsi">
       <div class="meta">
@@ -162,6 +158,11 @@
         <li>Identified that a code review had rejected correct work on a false technical
             claim, by requiring the claim be checked against the system's own libraries
             rather than accepted.</li>
+        <li>Submitted the work upstream as two separate pull requests
+            (<a href="https://github.com/NoahStolk/ddinfo-tools/pull/159">#159</a>,
+            <a href="https://github.com/NoahStolk/ddinfo-tools/pull/158">#158</a>),
+            splitting out a nine-line fix to a pre-existing crash affecting Windows and
+            Linux users so it could be reviewed and taken independently of the port.</li>
         <li>Determined that half of that effort's recorded failures were defects in the
             verification harness rather than in the work, by reading the reason attached
             to each one instead of the count.</li>
@@ -179,25 +180,23 @@
            Pull from there when expanding this into more bullets. -->
     </div>
 
-    <div class="role">
-      <div class="meta">
-        <div><strong>TODO — other roles</strong> <span class="where">— add tomorrow</span></div>
-        <span class="when">—</span>
-      </div>
-      <ul><li>Placeholder.</li></ul>
-    </div>
+
+    <!-- OPEN: further roles go here, newest first, matching the blocks above. The
+         empty placeholder that sat here is deleted: a blank role reads worse to a
+         stranger than no role at all. -->
   </section>
 
+  <!-- OPEN: Education removed rather than shown empty. To restore, paste back and fill:
   <section>
     <h2>Education</h2>
-    <p class="sub">TODO — Enzo to fill in.</p>
     <div class="role">
       <div class="meta">
-        <div><strong>TODO — institution</strong> <span class="where">— programme</span></div>
-        <span class="when">—</span>
+        <div><strong>Institution</strong> <span class="where">- programme</span></div>
+        <span class="when">years</span>
       </div>
     </div>
   </section>
+  -->
 
   <section>
     <h2>What I'm good at</h2>
@@ -213,7 +212,9 @@
       <li><strong>Designing systems that can be wrong safely</strong> — tamper-evident
           records, tests that refuse to answer rather than answer badly, and automation
           that stops short of the judgement call.</li>
-      <li>TODO — languages, tools, coursework Enzo wants listed.</li>
+      <!-- OPEN: languages, tools and coursework to list here. Left out rather than
+           guessed at - naming a language he would not want to be questioned on is
+           exactly the trap the rest of this page avoids. -->
     </ul>
   </section>
 

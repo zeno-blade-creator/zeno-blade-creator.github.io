@@ -255,9 +255,12 @@
       the port was more than a recompile.
     </p>
     <p>
-      The port is merged and running. Two changes are prepared to go back to the original
-      project: the port itself, and — separately — a three-line fix for a crash that
-      turned out not to be ours at all.
+      The port is merged and running, and both changes are now open against the original
+      project:
+      <a href="https://github.com/NoahStolk/ddinfo-tools/pull/159">the port itself</a>
+      (21 files) and — separately —
+      <a href="https://github.com/NoahStolk/ddinfo-tools/pull/158">a nine-line fix</a>
+      for a crash that turned out not to be ours at all.
     </p>
 
     <div class="callout">
@@ -269,11 +272,35 @@
         on Windows and Linux. Anyone hovering a graph in that tool has been hitting it.
       </p>
       <p>
-        It is going back as its own small pull request rather than buried inside a
-        thousand-line port, so it can be reviewed in two minutes and help people who will
-        never run the Mac build.
+        It went back as its own small pull request rather than buried inside a
+        thousand-line port, so it can be reviewed in two minutes and helps people who will
+        never run the Mac build. Splitting it also means the maintainer can take the crash
+        fix and reject the port, which is a real possibility a bundled PR would have taken
+        away from him.
       </p>
     </div>
+  </section>
+
+  <section>
+    <h2>What I put in the pull request</h2>
+    <p>
+      The port PR says, in its own verification section, that the app aborted during
+      testing. It names the cause, says it is not the port's fault, and then flags a second
+      possible cause I could not rule out.
+    </p>
+    <p>
+      That is not modesty. A maintainer who finds a crash himself after merging trusts
+      nothing else in the submission; a maintainer who reads it in the PR gets to decide
+      with the same information I had. The claim I <em>could</em> back — the block located
+      after reading 624 MB across 1,189 regions, live stats rendering — is stated exactly
+      and no further.
+    </p>
+    <p>
+      I had originally drafted a stronger line, saying replay reading and injection had
+      been exercised against a live game. Checking the record showed that was not
+      substantiated, so it came out. Writing a claim is easy; the discipline is checking
+      it before someone else does.
+    </p>
   </section>
 
   <section>
