@@ -1,0 +1,5 @@
+# Personal values kept out of the public repo (see build-resume.sh)
+resume.local.env
+resume-phone.pdf
+.resume-phone.html
+.DS_Store

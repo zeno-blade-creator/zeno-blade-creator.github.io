@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enzo Markarian — Resume</title>
+<meta name="description" content="Enzo Markarian — one-page resume.">
+<!--
+  ONE-PAGE RESUME. This file is the single source for resume.pdf.
+  Build with ./build-resume.sh. The phone number is NOT stored here: the build script
+  injects it from the gitignored resume.local.env, so the public copy never carries it.
+  Anything wrapped in <mark> is unconfirmed and must be checked with Enzo.
+-->
+<style>
+  @page { size: Letter; margin: 0.4in 0.5in; }
+  :root { --ink:#111; --soft:#444; --rule:#999; --link:#1a4f8b; }
+  * { box-sizing: border-box; }
+  html { background:#e9e9e9; }
+  body { font: 9.5pt/1.28 Charter, "Bitstream Charter", Georgia, serif; color: var(--ink);
+         margin: 0; background:#fff; }
+  .page { max-width: 8.5in; margin: 0 auto; padding: 0.4in 0.5in; background:#fff; }
+  @media print { html{background:#fff} .page { padding: 0; max-width:none; } }
+  @media screen { .page { margin: 24px auto; box-shadow: 0 1px 6px rgba(0,0,0,.2); } }
+  a { color: var(--link); text-decoration: none; }
+  h1 { font-size: 19pt; margin: 0; letter-spacing: .3px; text-align:center; }
+  .contact { text-align:center; margin: 2px 0 0; font-size: 9.2pt; }
+  .contact span + span::before { content: " · "; color: var(--soft); }
+  h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: .8px; margin: 7px 0 2px;
+       border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+  .row { display:flex; justify-content:space-between; gap: 12px; margin-top: 3px; }
+  .row .when { white-space: nowrap; color: var(--soft); }
+  .sub { color: var(--soft); font-style: italic; }
+  ul { margin: 1px 0 0; padding-left: 15px; }
+  li { margin: 0.5px 0; }
+  .key { font-size: 8.7pt; color: var(--soft); margin: 0 0 1px; }
+  .tag { font-size: 8.1pt; border: 1px solid #bbb; border-radius: 3px; padding: 0 3px;
+         white-space: nowrap; color: var(--soft); font-style: normal; }
+  .tag.cc { border-color: #c47a4a; color: #8a4a22; }
+  p.line { margin: 1px 0; }
+  mark { background: #fff2a8; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>Enzo Markarian</h1>
+<div class="contact">
+  <span>Boston, MA</span>
+  <!--PHONE-->
+  <span><a href="mailto:enzomarkarian28@gmail.com">enzomarkarian28@gmail.com</a></span>
+  <span><a href="https://github.com/zeno-blade-creator">github.com/zeno-blade-creator</a></span>
+  <span><a href="https://zeno-blade-creator.github.io">zeno-blade-creator.github.io</a></span>
+</div>
+
+<h2>Education</h2>
+<div class="row"><div><strong>Northeastern University</strong>, Boston, MA — B.S. Computer Science and Game Development</div>
+  <div class="when">Sep 2026 – May 2030 (expected)</div></div>
+<div class="row"><div><strong>Foothill College, Middle College Program</strong>, Mountain View, CA — full-time college classes in 11th–12th grade</div>
+  <div class="when">2024 – 2026</div></div>
+<p class="line" style="padding-left:15px">Coursework: Intermediate C++, Calculus, Discrete Math, Physics with Calculus, Economics</p>
+<div class="row"><div><strong>Los Altos High School</strong>, Los Altos, CA — GPA 4.50 weighted / 3.97 unweighted</div>
+  <div class="when">2022 – 2026</div></div>
+
+<h2>Experience</h2>
+<div class="row"><div><strong>MIT Beaver Works Summer Institute</strong> — Teaching Assistant, Serious Games with AI
+  <span class="tag cc">Claude Code</span></div>
+  <div class="when">Jun – Aug 2026</div></div>
+<ul>
+  <li>Redesigned daily post-lecture quizzes into an activity where student groups make mind maps before and after each
+      lecture, and had Claude Code build <em>Mind-Mapper</em>, a web app (Supabase) tracking participation and each lecture's key words.</li>
+  <li>Moved the course off MIT's internal GitHub onto public GitHub so students could reach it, bringing every year into one
+      organization with separate head, instructor and student teams.</li>
+  <li>Designed GitHub bots that set up each year's teams and repositories and check access every night, so instructors
+      don't have to redo setup each summer.</li>
+  <li>Expanded the student and instructor course websites into one central hub, and wrote a proposal for helping stuck
+      students find their next step without AI doing the thinking for them.</li>
+</ul>
+
+<div class="row"><div><strong>MIT Beaver Works Summer Institute</strong> — Student Team Lead, Serious Games with AI</div>
+  <div class="when">Jul 2025</div></div>
+<ul>
+  <li>Led 3 teammates making a zombie-apocalypse camp game that studies how much players trust AI helpers — which
+      aren't always reliable — with tasks of different importance.</li>
+  <li>Playtested with 6 players over repeated runs, tracking their progress and trust in the helpers, and presented the findings.
+      Received the program's <em>AI Skill and Judgment</em> award.</li>
+</ul>
+
+<h2>Projects</h2>
+<p class="key"><span class="tag cc">Claude Code</span> = Claude wrote the code; I chose the goal, the order, and how to check it.
+  &nbsp;<span class="tag">coded by me</span> = I wrote the code.</p>
+
+<div class="row"><div><strong><a href="https://zeno-blade-creator.github.io/projects/ai-workflow.html">My Claude Code workflow</a></strong>
+  <span class="tag cc">Claude Code</span></div><div class="when">Aug 2026 – now</div></div>
+<ul>
+  <li>Set up a pipeline where Claude turns an idea into finished code: it questions my plan, writes a spec, and splits the work
+      into tasks — stating which must run in order and which can run in parallel — then builds each task in a fresh session.</li>
+  <li>Combined community skills (a multi-agent "council" debate, a strict code-quality review) with two of my own:
+      <em>ship</em> runs the whole pipeline with one human check, and <em>sharpen</em> turns what went wrong into fixes.</li>
+  <li>Every workflow change must pass a with-vs-without test; the first check deleted 4 of the 6 instructions just added.</li>
+</ul>
+
+<div class="row"><div><strong><a href="https://github.com/NoahStolk/ddinfo-tools/pull/159">Mac version of a video game practice tool</a></strong>
+  <span class="sub">— C#</span> <span class="tag cc">Claude Code</span></div><div class="when">Aug 2026</div></div>
+<ul>
+  <li>Split the port into 7 tasks, riskiest first; caught an AI reviewer wrongly rejecting working code.
+      Submitted upstream (21 files); the maintainer has requested changes.</li>
+</ul>
+
+<div class="row"><div><strong><a href="https://github.com/zeno-blade-creator/whisky-unity-mouse-fix">Getting a Windows-only game working on a Mac for free</a></strong>
+  <span class="tag cc">Claude Code</span></div><div class="when">Aug 2026</div></div>
+<ul>
+  <li>Clicks did nothing and paid software didn't fully fix it. Pushed back when Claude said right-click worked (I'd tested it; it didn't),
+      which exposed an incomplete analysis. All mouse buttons now work; documented 6 bugs, 2 in the Whisky app itself.</li>
+</ul>
+
+<div class="row"><div><strong><a href="https://github.com/k-petricusic/C-Class-Game">Top-down 2D stealth game</a></strong>
+  <span class="sub">— C++, no game engine</span> <span class="tag">coded by me</span></div><div class="when">May – Aug 2025</div></div>
+<ul>
+  <li>Wrote and understood the code myself, with early AI autocomplete; learned CMake, compilers, game loops, and the limits of drawing in a terminal.</li>
+  <li>Team lead with 2 teammates (92 of 107 commits); ran weekly check-ins and organized 10 playtesters.</li>
+</ul>
+
+<div class="row"><div><strong><a href="https://github.com/zeno-blade-creator/Blockaform">Blockaform</a></strong>
+  <span class="sub">— Unity</span> <span class="tag cc">Claude Code</span></div><div class="when">Nov – Dec 2025</div></div>
+<ul>
+  <li>3D block-moving puzzle game; my first project learning Unity and connecting Claude to it.</li>
+</ul>
+
+<h2>Skills &amp; Interests</h2>
+<p class="line"><strong>Written myself:</strong> C++, Python, C#, Unity, Git/GitHub, some Java
+  &nbsp;·&nbsp; <strong>With Claude Code:</strong> Supabase, Cloudflare Pages &amp; Access, Netlify, GitHub Actions, REST APIs, MCP servers</p>
+<p class="line"><strong>Curious about:</strong> using AI to help students learn more deeply, beyond coding; and human + AI workflows
+  that make both more productive — including how to measure that past the short term</p>
+<p class="line"><strong>Activities:</strong> Team lead, Brown Pre-College game design · 2nd-round finalist, Google case competition ·
+  National Hispanic Recognition Program · Badminton, Los Altos HS (<mark>spirit captain</mark>) · Practice partner, Foothill College women's badminton</p>
+
+</div>
+</body>
+</html>
