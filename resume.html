@@ -52,43 +52,44 @@
   <span><a href="https://github.com/zeno-blade-creator">github.com/zeno-blade-creator</a></span>
   <span><a href="https://zeno-blade-creator.github.io">zeno-blade-creator.github.io</a></span>
 </div>
-<p class="summary">Computer Science and Game Development student at Northeastern. Taught at an MIT summer
-  program of 45 students, where I redesigned how they were quizzed and built the tools that ran it.</p>
+<p class="summary">Computer Science and Game Development student at Northeastern. As a TA for 45 students at an MIT summer
+  program, I led replacing daily quizzes with a research-based mind-mapping activity and built the tools that ran it.</p>
 
 <h2>Teaching &amp; Leadership</h2>
-<div class="row"><div><strong>MIT Beaver Works Summer Institute</strong> — Teaching Assistant, Serious Games with AI
-  <span class="sub">· 45 students, 9 instructors</span></div>
+<div class="row"><div><strong>MIT Beaver Works Summer Institute</strong>, Teaching Assistant, Serious Games with AI
+  <span class="sub">(45 students, 9 instructors)</span></div>
   <div class="when">Jun – Aug 2026</div></div>
 <ul>
-  <li>Replaced daily post-lecture quizzes with an activity where student groups draw a mind map before and after each
-      lecture, so what they got wrong is visible while it can still be fixed.</li>
-  <li>Wrote the guidance TAs used for stuck students: how to help them find their next step without AI doing the thinking for them.</li>
-  <li>Had Claude Code build <em>Mind-Mapper</em>, a phone web app (Supabase) that tracks each group's participation and
-      the key words from each lecture. <span class="tag cc">Claude Code</span></li>
-  <li>Moved the course from MIT's internal GitHub to public GitHub so students could reach it, put every year in one
-      organization, and designed bots that set up each year's teams and check access nightly. <span class="tag cc">Claude Code</span></li>
+  <li>Came up with and led replacing daily post-lecture quizzes, drawing on learning research (retrieval practice, concept maps,
+      metacognition) and refining the idea with feedback from 2 TAs. Student groups map 5 key words before each lecture, then add 5 more after, so the map shows what changed.</li>
+  <li>Designed a Claude skill that reads lecture slides and suggests those words, choosing ones that spark curiosity before the
+      lecture and connect ideas after it. Kept a daily log of what broke in each session and fed it back into the activity.</li>
+  <li>Had Claude Code build <em>Mind-Mapper</em>, a mobile web app TAs used in class to record each group's participation
+      across 12 lectures. <span class="tag cc">Claude Code</span></li>
+  <li>Proposed and led, with another TA, moving the course off MIT's internal GitHub into one public organization with a
+      student site and a login-protected instructor hub that instructors used daily. Instructors approved it on July 24. <span class="tag cc">Claude Code</span></li>
+  <li>After the program, interviewed 5 students and wrote a learning-design proposal for next year, including how to help
+      stuck students reason forward without AI doing the thinking. The mind-map format is being kept for 2027.</li>
 </ul>
 
-<div class="row"><div><strong>MIT Beaver Works Summer Institute</strong> — Student Team Lead, Serious Games with AI</div>
+<div class="row"><div><strong>MIT Beaver Works Summer Institute</strong>, Student Team Lead, Serious Games with AI</div>
   <div class="when">Jul 2025</div></div>
 <ul>
-  <li>Led 3 teammates making a zombie-apocalypse camp game that measures how much players trust AI helpers — which
-      aren't always reliable — with tasks of different importance. Playtested with 6 players and presented the findings.</li>
-  <li>Received the program's <em>AI Skill and Judgment</em> award, for building AI solutions and judging when to use them.</li>
+  <li>Led 3 teammates making a zombie-apocalypse camp game that measures how much players trust unreliable AI helpers
+      across tasks of different stakes. Playtested with 6 players and presented the findings. Won the <em>AI Skill and Judgment</em> award.</li>
 </ul>
 
-<div class="row"><div><strong>Brown Pre-College</strong> — Team Lead, Systems Thinking &amp; Game Design</div>
+<div class="row"><div><strong>Brown Pre-College</strong>, Team Lead, Systems Thinking &amp; Game Design</div>
   <div class="when">Summer 2024</div></div>
 <ul>
-  <li>Led a team of 4, in a cohort of about 40, to ship a game teaching opportunity cost — why companies underinvest in
-      the environment when the benefit is shared and the cost is theirs. Rolled out to 20 players.</li>
+  <li>Led a team of 4, in a cohort of about 40, to build a game teaching opportunity cost: why companies underinvest in the
+      environment when the benefit is shared and the cost is theirs. 20 people played it.</li>
 </ul>
 
-<div class="row"><div><strong>Los Altos High School Badminton</strong> — Spirit Lead</div>
+<div class="row"><div><strong>Los Altos High School Badminton</strong>, Spirit Lead</div>
   <div class="when">2023 – 2026</div></div>
 <ul>
-  <li>Ran the team's family night for 130+ people plus trivia and Jeopardy socials through the season; led both the
-      cheer squad and the team-bonding group.</li>
+  <li>Ran the team's family night for 130+ people and trivia and Jeopardy socials through the season; led the cheer squad and the team-bonding group.</li>
 </ul>
 
 <h2>Projects</h2>
@@ -96,52 +97,45 @@
   &nbsp;<span class="tag">coded by me</span> = I wrote the code.</p>
 
 <div class="row"><div><strong><a href="https://zeno-blade-creator.github.io/projects/ai-workflow.html">My Claude Code workflow</a></strong>
-  <span class="sub">— write-up on my site</span> <span class="tag cc">Claude Code</span></div><div class="when">Aug 2026 – now</div></div>
+  <span class="sub">(write-up on my site)</span> <span class="tag cc">Claude Code</span></div><div class="when">Aug 2026 – now</div></div>
 <ul>
-  <li>Set up a pipeline where Claude turns an idea into finished code: it questions my plan, writes a spec, splits the work
-      into tasks — saying which must run in order and which can run in parallel — and builds each in a fresh session.</li>
-  <li>Combined community skills (a multi-agent "council" debate, a strict code review) with two of my own: <em>ship</em> runs
-      it all with one human check; <em>sharpen</em> turns what went wrong into fixes. A workflow change only stays if a
-      with-vs-without test shows it matters — the first check deleted 4 of the 6 rules just added.</li>
+  <li>Designed a pipeline that takes an idea to finished code: Claude questions my plan, writes a spec, and splits the work into
+      tasks, marking which must run in order and which can run in parallel. A separate AI reviewer checks each one.</li>
+  <li>Built two skills of my own on top of community ones: <em>ship</em> runs the pipeline with one human check, and <em>sharpen</em>
+      turns mistakes into fixes. A rule only stays if a with/without test shows it matters; the first audit deleted 4 of the 6 it had just written.</li>
 </ul>
 
 <div class="row"><div><strong><a href="https://github.com/NoahStolk/ddinfo-tools/pull/159">Mac version of a video game practice tool</a></strong>
-  <span class="sub">— C#</span> <span class="tag cc">Claude Code</span></div><div class="when">Aug 2026</div></div>
+  <span class="sub">(C#, open source)</span> <span class="tag cc">Claude Code</span></div><div class="when">Aug 2026</div></div>
 <ul>
-  <li>Split the port into 7 tasks, riskiest first. Opened a 21-file pull request to the original project; the maintainer
-      has engaged over several rounds of review.</li>
-  <li>Caught an AI reviewer rejecting working code over a function it wrongly said didn't exist — and was corrected myself
-      when I claimed the project's API had no macOS option. It did. Both are why I check claims against the source now.</li>
+  <li>Contributed a 21-file macOS port, riskiest part first; the maintainer is reviewing it over several rounds and offered to change his
+      server to support it. He also replaced my crash-fix pull request with his own fix for the same bug.</li>
+  <li>Caught an AI reviewer rejecting working code over a function it wrongly said didn't exist, and got it wrong myself when I
+      claimed the project's API had no macOS option. It did. Now I check claims against the source.</li>
 </ul>
 
 <div class="row"><div><strong><a href="https://github.com/zeno-blade-creator/whisky-unity-mouse-fix">Getting a Windows-only game working on a Mac for free</a></strong>
   <span class="tag cc">Claude Code</span></div><div class="when">Aug 2026</div></div>
 <ul>
-  <li>Clicks did nothing and paid software didn't fully fix it. Pushed back when Claude said right-click worked — I'd played it;
-      it didn't — which exposed an incomplete analysis. All mouse buttons now work; documented 6 bugs, 2 in the Whisky app itself.</li>
+  <li>Paid software couldn't fix broken mouse clicks. Claude said right-click worked; I had played the game and knew it didn't, and
+      pushing back exposed an incomplete analysis. All buttons now work; documented 6 bugs, 2 in Whisky itself.</li>
 </ul>
 
 <div class="row"><div><strong><a href="https://github.com/k-petricusic/C-Class-Game">Top-down 2D stealth game</a></strong>
-  <span class="sub">— C++, no game engine</span> <span class="tag">coded by me</span></div><div class="when">May – Aug 2025</div></div>
+  <span class="sub">(C++, no game engine)</span> <span class="tag">coded by me</span></div><div class="when">May – Aug 2025</div></div>
 <ul>
-  <li>Wrote and understood the code myself with early AI autocomplete; learned CMake, compilers, game loops, and the limits
-      of drawing in a terminal. Team lead with 2 teammates (92 of 107 commits); organized 10 playtesters.</li>
+  <li>Wrote and understood the code myself with early AI autocomplete, learning CMake, compilers and game loops. Team lead with 2 teammates
+      (92 of 107 commits); organized 10 playtesters. Also: <a href="https://github.com/zeno-blade-creator/Blockaform">Blockaform</a>, a Unity puzzle game built with Claude Code.</li>
 </ul>
 
-<div class="row"><div><strong><a href="https://github.com/zeno-blade-creator/Blockaform">Blockaform</a></strong>
-  <span class="sub">— Unity</span> <span class="tag cc">Claude Code</span></div><div class="when">Nov – Dec 2025</div></div>
-<ul>
-  <li>3D block-moving puzzle game; my first project learning Unity and connecting Claude to it.</li>
-</ul>
-
-<h2>Education, Skills &amp; Interests</h2>
-<p class="line"><strong>Northeastern University</strong> — B.S. Computer Science and Game Development, Sep 2026 – May 2030 (expected)
-  &nbsp;·&nbsp; <strong>Foothill College Middle College</strong> (college classes in 11th–12th grade, 2024–2026) — Intermediate C++,
+<h2>Education, Skills &amp; Honors</h2>
+<p class="line"><strong>Northeastern University</strong>, B.S. Computer Science and Game Development, Sep 2026 – May 2030 (expected)
+  &nbsp;·&nbsp; <strong>Foothill College Middle College</strong> (college classes in 11th–12th grade, 2024–2026): Intermediate C++,
   Calculus, Discrete Math, Physics with Calculus, Economics &nbsp;·&nbsp; Los Altos HS, GPA 4.50 / 3.97</p>
 <p class="line"><strong>Written myself:</strong> C++, Python, C#, Unity, Git/GitHub, some Java
-  &nbsp;·&nbsp; <strong>With Claude Code:</strong> Supabase, Cloudflare Pages &amp; Access, Netlify, GitHub Actions, REST APIs, MCP servers</p>
-<p class="line"><strong>Curious about:</strong> using AI to help students learn more deeply, beyond coding; and human + AI workflows
-  that make both more productive &nbsp;·&nbsp; <strong>Also:</strong> 2nd-round finalist, Google case competition · National Hispanic Recognition Program</p>
+  &nbsp;·&nbsp; <strong>With Claude Code:</strong> Supabase, Cloudflare Pages &amp; Access, Netlify, GitHub Actions, REST APIs, MCP servers, Claude skills</p>
+<p class="line"><strong>Curious about:</strong> using AI to help students learn more deeply; human + AI workflows that make both more productive</p>
+<p class="line"><strong>Honors:</strong> 2nd-round finalist, Google case competition · National Hispanic Recognition Program</p>
 
 </div>
 </body>
